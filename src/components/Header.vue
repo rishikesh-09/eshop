@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar :elevation="3" app>
+  <v-app-bar :elevation="2" app>
     <v-avatar size="70">
       <v-img src="src\assests\logo.png" class="ml-3" ></v-img>
     </v-avatar>

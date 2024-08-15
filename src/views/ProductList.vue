@@ -1,55 +1,115 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="12" sm="6" md="4" v-for="product in paginatedProducts" :key="product.id">
-        <v-card variant="outlined">
-          <v-img :src="product.image" height="200"></v-img>
-          <v-card-title>{{ truncate(product.title, 25) }}</v-card-title>
-          <v-card-text>{{ truncate(product.description, 50) }}</v-card-text>
-          <v-card-actions>
-            <v-btn :to="`/product/${product.id}`" text variant="tonal">View Details</v-btn>
-            <v-btn @click="addToCart(product)" color="primary" variant="outlined">Add to Cart</v-btn>
-          </v-card-actions>
-        </v-card>
+      <v-col cols="12">
+        <SearchBar v-model:searchQuery="searchQuery" />
+      </v-col>
+      <v-col cols="12" sm="4">
+        <CategoryFilter v-model:selectedCategory="selectedCategory" :categories="categories" />
       </v-col>
     </v-row>
+
+    <v-row>
+      <v-col v-for="product in filteredProducts" :key="product.id" cols="12" sm="6" md="4">
+    
+        <v-card class="d-flex flex-column" height="100%">
+          <v-img :src="product.image" height="200" contain />
+          <v-card-title class="text-truncate">{{ product.title }}</v-card-title>
+          <v-card-text class="description-text">
+            {{ product.description }}
+          </v-card-text>
+          <v-spacer></v-spacer>
+          <v-card-actions>
+            <v-btn :to="`/product/${product.id}`" text variant="tonal">View Details</v-btn>
+            <v-btn @click="addToCart(product)" color="primary" variant="flat">Add to Cart</v-btn>
+          </v-card-actions>
+        </v-card>
+  
+      </v-col>
+    </v-row>
+
+    <v-row justify="center">
+      <v-col cols="12">
+        <v-pagination v-model="currentPage" :length="pageCount" class="mt-4" />
+      </v-col>
+    </v-row>
+    
   </v-container>
-  <v-divider></v-divider>
-  <v-pagination v-model="currentPage" :length="pageCount"></v-pagination>
 </template>
 
-<script>
-import { ref, computed, onMounted } from 'vue';
+<script setup>
+import { ref, computed, onMounted, watch } from 'vue';
+import { useProductStore } from '@/store/productStore';
 import { useCartStore } from '@/store/cartStore';
+import SearchBar from '../components/SearchBar.vue';
+import CategoryFilter from '../components/CategoryFilter.vue';
 
-export default {
-  setup() {
-    const products = ref([]);
-    const currentPage = ref(1);
-    const itemsPerPage = 9;
+const productStore = useProductStore();
+const cartStore = useCartStore();
 
-    const cartStore = useCartStore();
+const currentPage = ref(1);
+const itemsPerPage = 9;
 
-    onMounted(async () => {
-      const response = await fetch('https://fakestoreapi.com/products');
-      products.value = await response.json();
-    });
+const searchQuery = ref('');
+const selectedCategory = ref('All');
 
-    const pageCount = computed(() => Math.ceil(products.value.length / itemsPerPage));
+onMounted(async () => {
+  await productStore.fetchProducts();
+});
 
-    const paginatedProducts = computed(() =>
-      products.value.slice((currentPage.value - 1) * itemsPerPage, currentPage.value * itemsPerPage)
-    );
+const categories = computed(() => [
+  'All',
+  ...new Set(productStore.products.map(product => product.category))
+]);
 
-    const truncate = (text, length) => {
-      return text.length > length ? text.substring(0, length) + '...' : text;
-    };
+const filteredProducts = computed(() => {
+  console.log('Filtering products. Search:', searchQuery.value, 'Category:', selectedCategory.value);
+  return productStore.products
+    .filter(product => {
+      const matchesSearchQuery = searchQuery.value
+        ? product.title.toLowerCase().includes(searchQuery.value.toLowerCase())
+        : true;
+      const matchesCategory = selectedCategory.value !== 'All'
+        ? product.category === selectedCategory.value
+        : true;
+      return matchesSearchQuery && matchesCategory;
+    })
+    .slice((currentPage.value - 1) * itemsPerPage, currentPage.value * itemsPerPage);
+});
 
-    const addToCart = (product) => {
-      cartStore.addToCart(product);
-    };
+const pageCount = computed(() =>
+  Math.ceil(
+    productStore.products.filter(product => {
+      const matchesSearchQuery = searchQuery.value
+        ? product.title.toLowerCase().includes(searchQuery.value.toLowerCase())
+        : true;
+      const matchesCategory = selectedCategory.value !== 'All'
+        ? product.category === selectedCategory.value
+        : true;
+      return matchesSearchQuery && matchesCategory;
+    }).length / itemsPerPage
+  )
+);
 
-    return { products, currentPage, pageCount, paginatedProducts, truncate, addToCart };
-  },
+const addToCart = (product) => {
+  cartStore.addToCart(product);
 };
+
 </script>
+
+<style scoped>
+.v-pagination {
+  justify-content: center;
+}
+.v-card-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.description-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+</style>

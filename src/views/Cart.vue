@@ -11,7 +11,7 @@
             <v-list-item-title>{{ item.title }}</v-list-item-title>
             <v-list-item-subtitle>${{ item.price }}</v-list-item-subtitle>
             
-            <v-list-item-action>
+            <v-list-item-action class="mt-4 mb-2">
               <v-btn icon @click="decreaseQuantity(item)" class="mr-2" size="28px">
                 <v-icon>mdi-minus</v-icon>
               </v-btn>
@@ -34,7 +34,8 @@
             <div>Total Price: ${{ totalPrice.toFixed(2) }}</div>
           </v-card-text>
           <v-card-actions>
-            <v-btn color="primary" variant="outlined">Checkout</v-btn>
+            <v-btn @click="openCheckoutDialog" color="primary" variant="flat">Checkout</v-btn>
+            <CheckoutDialog :isOpen="dialogOpen" @close="closeDialog" />
           </v-card-actions>
         </v-card>
       </v-col>
@@ -45,8 +46,23 @@
 <script>
 import { useCartStore } from '@/store/cartStore';
 import { computed } from 'vue';
+import CheckoutDialog from '../components/Dialog.vue';
 
 export default {
+  components: { CheckoutDialog },
+  data() {
+    return {
+      dialogOpen: false
+    }
+  },
+  methods: {
+    openCheckoutDialog() {
+      this.dialogOpen = true;
+    },
+    closeDialog() {
+      this.dialogOpen = false;
+    }
+  },
   setup() {
     const cartStore = useCartStore();
 

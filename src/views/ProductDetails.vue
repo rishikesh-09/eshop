@@ -10,7 +10,7 @@
           <v-card-subtitle>${{ product.price }}</v-card-subtitle>
           <v-card-text>{{ product.description }}</v-card-text>
           <v-card-actions>
-            <v-btn @click="addToCart(product)" color="primary" variant="outlined">Add to Cart</v-btn>
+            <v-btn @click="addToCart(product)" color="primary" variant="flat">Add to Cart</v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -19,20 +19,17 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
+import { useProductStore } from '@/store/productStore';
 import { useCartStore } from '@/store/cartStore';
 
 export default {
   setup() {
-    const product = ref({});
-    const route = useRoute();
+    const productStore = useProductStore();
     const cartStore = useCartStore();
-
-    onMounted(async () => {
-      const response = await fetch(`https://fakestoreapi.com/products/${route.params.id}`);
-      product.value = await response.json();
-    });
+    const route = useRoute();
+    const productId = parseInt(route.params.id, 10);
+    const product = productStore.products.find((p) => p.id === productId);
 
     const addToCart = (product) => {
       cartStore.addToCart(product);
