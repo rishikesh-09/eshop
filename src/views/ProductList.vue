@@ -1,115 +1,115 @@
 <template>
   <v-container>
-    <v-row>
-      <v-col cols="12">
-        <SearchBar v-model:searchQuery="searchQuery" />
-      </v-col>
-      <v-col cols="12" sm="4">
-        <CategoryFilter v-model:selectedCategory="selectedCategory" :categories="categories" />
+    <h1 v-if="category" class="category-title">{{ formatCategoryName(category) }}</h1>
+    <h1 v-else class="shop-title">All Products</h1>
+
+    <v-row v-if="loading">
+      <v-col class="text-center">
+        <v-progress-circular indeterminate color="primary"></v-progress-circular>
       </v-col>
     </v-row>
 
-    <v-row>
-      <v-col v-for="product in filteredProducts" :key="product.id" cols="12" sm="6" md="4">
-    
-        <v-card class="d-flex flex-column" height="100%">
-          <v-img :src="product.image" height="200" contain />
-          <v-card-title class="text-truncate">{{ product.title }}</v-card-title>
-          <v-card-text class="description-text">
-            {{ product.description }}
-          </v-card-text>
-          <v-spacer></v-spacer>
-          <v-card-actions>
-            <v-btn :to="`/product/${product.id}`" text variant="tonal">View Details</v-btn>
-            <v-btn @click="addToCart(product)" color="primary" variant="flat">Add to Cart</v-btn>
-          </v-card-actions>
-        </v-card>
-  
+    <v-row v-else-if="filteredProducts.length === 0">
+      <v-col class="text-center">
+        <p>No products found.</p>
       </v-col>
     </v-row>
 
-    <v-row justify="center">
-      <v-col cols="12">
-        <v-pagination v-model="currentPage" :length="pageCount" class="mt-4" />
-      </v-col>
-    </v-row>
-    
+    <template v-else>
+      <v-row>
+        <v-col v-for="product in paginatedProducts" :key="product.id" cols="12" sm="6" md="4">
+          <ProductCard :product="product" @add-to-cart="addToCart" />
+        </v-col>
+      </v-row>
+
+      <v-row justify="center">
+        <v-col cols="12">
+          <v-pagination v-model="currentPage" :length="pageCount" class="mt-4" />
+        </v-col>
+      </v-row>
+    </template>
   </v-container>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue';
+import { ref, computed, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
 import { useProductStore } from '@/store/productStore';
 import { useCartStore } from '@/store/cartStore';
-import SearchBar from '../components/SearchBar.vue';
-import CategoryFilter from '../components/CategoryFilter.vue';
+import { useSearchStore } from '@/store/searchStore';
+import ProductCard from '@/components/ProductCard.vue';
 
+const route = useRoute();
 const productStore = useProductStore();
 const cartStore = useCartStore();
+const searchStore = useSearchStore();
 
 const currentPage = ref(1);
 const itemsPerPage = 9;
+const loading = ref(true);
 
-const searchQuery = ref('');
-const selectedCategory = ref('All');
+const category = computed(() => route.params.category);
 
 onMounted(async () => {
-  await productStore.fetchProducts();
+  await productStore.fetchData();
+  updateFilters();
+  loading.value = false;
 });
 
-const categories = computed(() => [
-  'All',
-  ...new Set(productStore.products.map(product => product.category))
-]);
+function updateFilters() {
+  const querySearch = route.query.q || '';
+  searchStore.setQuery(querySearch);
+  currentPage.value = 1;
+}
 
 const filteredProducts = computed(() => {
-  console.log('Filtering products. Search:', searchQuery.value, 'Category:', selectedCategory.value);
-  return productStore.products
-    .filter(product => {
-      const matchesSearchQuery = searchQuery.value
-        ? product.title.toLowerCase().includes(searchQuery.value.toLowerCase())
-        : true;
-      const matchesCategory = selectedCategory.value !== 'All'
-        ? product.category === selectedCategory.value
-        : true;
-      return matchesSearchQuery && matchesCategory;
-    })
-    .slice((currentPage.value - 1) * itemsPerPage, currentPage.value * itemsPerPage);
+  let products = productStore.products;
+
+  if (category.value) {
+    products = products.filter(product => 
+      product.category.toLowerCase().replace(/\s+/g, '-') === category.value.toLowerCase()
+    );
+  }
+
+  return products.filter(product => {
+    const matchesSearch = searchStore.query
+      ? product.title.toLowerCase().includes(searchStore.query.toLowerCase()) ||
+        product.description.toLowerCase().includes(searchStore.query.toLowerCase()) || 
+        product.category.toLowerCase().includes(searchStore.query.toLowerCase())
+      : true;
+    return matchesSearch;
+  });
 });
 
-const pageCount = computed(() =>
-  Math.ceil(
-    productStore.products.filter(product => {
-      const matchesSearchQuery = searchQuery.value
-        ? product.title.toLowerCase().includes(searchQuery.value.toLowerCase())
-        : true;
-      const matchesCategory = selectedCategory.value !== 'All'
-        ? product.category === selectedCategory.value
-        : true;
-      return matchesSearchQuery && matchesCategory;
-    }).length / itemsPerPage
-  )
+const paginatedProducts = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  return filteredProducts.value.slice(start, end);
+});
+
+const pageCount = computed(() => 
+  Math.ceil(filteredProducts.value.length / itemsPerPage)
 );
 
 const addToCart = (product) => {
   cartStore.addToCart(product);
 };
 
+const formatCategoryName = (category) => {
+  return category.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+};
 </script>
 
 <style scoped>
 .v-pagination {
   justify-content: center;
 }
-.v-card-title {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.description-text {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.category-title,
+.shop-title {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  margin: 2rem 0;
+  text-transform: capitalize;
 }
 </style>

@@ -1,13 +1,14 @@
 <template>
-  <v-container>
+  <v-container v-if="product">
     <v-row>
       <v-col cols="12" md="6">
-        <v-img :src="product.image" height="300" ></v-img>
+        <v-img :src="product.image" height="300"></v-img>
       </v-col>
       <v-col cols="12" md="6">
-        <v-card variant="outlined">
+        <v-card>
           <v-card-title>{{ product.title }}</v-card-title>
-          <v-card-subtitle>${{ product.price }}</v-card-subtitle>
+          <v-card-text>${{ product.price }}</v-card-text>
+          <v-card-subtitle>rating:{{ product.rating.rate }}</v-card-subtitle>
           <v-card-text>{{ product.description }}</v-card-text>
           <v-card-actions>
             <v-btn @click="addToCart(product)" color="primary" variant="flat">Add to Cart</v-btn>
@@ -16,26 +17,47 @@
       </v-col>
     </v-row>
   </v-container>
+  <v-container v-else-if="loading">
+    <v-row>
+      <v-col class="text-center">
+        <v-progress-circular indeterminate color="primary"></v-progress-circular>
+      </v-col>
+    </v-row>
+  </v-container>
+  <v-container v-else>
+    <v-row>
+      <v-col class="text-center">
+        <v-alert type="error">Product not found</v-alert>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
-<script>
+<script setup>
+import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useProductStore } from '@/store/productStore';
 import { useCartStore } from '@/store/cartStore';
 
-export default {
-  setup() {
-    const productStore = useProductStore();
-    const cartStore = useCartStore();
-    const route = useRoute();
-    const productId = parseInt(route.params.id, 10);
-    const product = productStore.products.find((p) => p.id === productId);
+const route = useRoute();
+const productStore = useProductStore();
+const cartStore = useCartStore();
 
-    const addToCart = (product) => {
-      cartStore.addToCart(product);
-    };
+const product = ref(null);
+const loading = ref(true);
 
-    return { product, addToCart };
-  },
+onMounted(async () => {
+  const productId = parseInt(route.params.id, 10);
+  try {
+    product.value = await productStore.getProductById(productId);
+  } catch (error) {
+    console.error('Failed to fetch product:', error);
+  } finally {
+    loading.value = false;
+  }
+});
+
+const addToCart = (product) => {
+  cartStore.addToCart(product);
 };
 </script>

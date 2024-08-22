@@ -1,28 +1,58 @@
 <template>
-    <v-text-field
-      v-model="localSearchQuery"
-      label="Search"
-      outlined
-      dense
-      clearable
-      variant="outlined"
-      @input="emitSearch"
-    ></v-text-field>
-  </template>
-  
-  <script setup>
-  import { ref, watch } from 'vue';
-  
-  const props = defineProps(['searchQuery']);
-  const emit = defineEmits(['update:searchQuery']);
-  
-  const localSearchQuery = ref(props.searchQuery);
-  
-  watch(() => props.searchQuery, (newValue) => {
-    localSearchQuery.value = newValue;
-  });
-  
-  const emitSearch = () => {
-    emit('update:searchQuery', localSearchQuery.value);
-  };
-  </script>
+  <v-text-field
+    v-model="searchQuery"
+    label="Search"
+    outlined
+    dense
+    clearable
+    variant="outlined"
+    @input="handleInput"
+    @click:clear="handleClear"
+  >
+    <template v-slot:append-inner>
+      <v-icon @click="handleSearchClick">mdi-magnify</v-icon>
+    </template>
+  </v-text-field>
+</template>
+
+<script setup>
+import { ref, watch, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { useSearchStore } from '@/store/searchStore';
+
+const route = useRoute();
+const router = useRouter();
+const searchStore = useSearchStore();
+const searchQuery = ref('');
+
+const emit = defineEmits(['search']);
+
+const handleInput = () => {
+  updateSearch(searchQuery.value);
+};
+
+const handleClear = () => {
+  updateSearch('');
+};
+
+const handleSearchClick = () => {
+  updateSearch(searchQuery.value);
+};
+
+const updateSearch = (query) => {
+  searchStore.setQuery(query);
+  emit('search', query);
+  router.push({ path: '/shop', query: { q: query || undefined } });
+};
+
+watch(() => searchStore.query, (newQuery) => {
+  searchQuery.value = newQuery;
+});
+
+onMounted(() => {
+  searchQuery.value = route.query.q || '';
+  if (searchQuery.value) {
+    searchStore.setQuery(searchQuery.value);
+  }
+});
+</script>
