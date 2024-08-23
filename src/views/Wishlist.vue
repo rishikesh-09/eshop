@@ -14,7 +14,7 @@
     </v-container>
   </template>
   
-  <script setup>
+<script setup>
   import { computed } from 'vue';
   import { useWishlistStore } from '@/store/wishlistStore';
   import ProductCard from '@/components/ProductCard.vue';
@@ -23,11 +23,11 @@
   const wishlistItems = computed(() => wishlistStore.items);
   </script>
   
-  <style scoped>
+<style scoped>
   .wishlist-title {
     font-size: 2rem;
     font-weight: bold;
     text-align: center;
     margin: 2rem 0;
   }
-  </style>
+</style>

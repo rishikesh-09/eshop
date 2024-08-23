@@ -1,7 +1,7 @@
 <template>
   <v-card class="d-flex flex-column" height="100%" hover>
     <v-img :src="product.image" height="200" contain>
-      <v-btn icon :class="{ 'v-btn--active': isInWishlist }" @click="toggleWishlist"
+      <v-btn icon :class="isInWishlist" @click="toggleWishlist"
         style="position: absolute; top: 8px; right: 8px;">
         <v-icon>{{ isInWishlist ? 'mdi-heart' : 'mdi-heart-outline' }}</v-icon>
       </v-btn>
@@ -58,7 +58,7 @@ const toggleWishlist = () => {
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  .v-btn--active {
+  /* .v-btn--active {
   background-color: rgba(255, 255, 255, 0.3);
-}
+} */
   </style>
