@@ -112,4 +112,7 @@ const formatCategoryName = (category) => {
   margin: 2rem 0;
   text-transform: capitalize;
 }
+.v-container{
+  max-width: fit-content;
+}
 </style>

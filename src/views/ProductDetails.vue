@@ -61,3 +61,9 @@ const addToCart = (product) => {
   cartStore.addToCart(product);
 };
 </script>
+
+<style>
+.v-container{
+  max-width: fit-content;
+}
+</style>

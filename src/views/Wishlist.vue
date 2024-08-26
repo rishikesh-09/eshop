@@ -30,4 +30,7 @@
     text-align: center;
     margin: 2rem 0;
   }
+  .v-container{
+  max-width: fit-content;
+}
 </style>

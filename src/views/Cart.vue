@@ -63,7 +63,7 @@
 <script >
 import { useCartStore } from '@/store/cartStore';
 import { ref, computed } from 'vue';
-import CheckoutDialog from '../components/Dialog.vue';
+import CheckoutDialog from '../components/CheckoutDialog.vue';
 
 export default {
   components: { CheckoutDialog },
@@ -121,5 +121,8 @@ export default {
 
 .v-list-item:last-child {
   border-bottom: none;
+}
+.v-container{
+  max-width: fit-content;
 }
 </style>
