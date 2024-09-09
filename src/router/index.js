@@ -4,6 +4,7 @@ import ProductDetails from '@/views/ProductDetails.vue';
 import Cart from '@/views/Cart.vue';
 import Home from '@/views/Home.vue';
 import Wishlist from '@/views/Wishlist.vue';
+import Login from '@/views/Login.vue';
 
 const routes = [
   
@@ -14,6 +15,7 @@ const routes = [
   { path: '/cart', component: Cart },
   { path: '/shop/:category', name: 'ShopCategory', component: ProductList },
   { path: '/wishlist', name: 'Wishlist', component: Wishlist },
+  { path: '/login' , name: 'Login', component: Login },
 
 ];
 
