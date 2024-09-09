@@ -1,49 +1,39 @@
 import { defineStore } from 'pinia';
-import { ref, computed } from 'vue';
 
-export const useCartStore = defineStore('cart', () => {
-  const savedCart = localStorage.getItem('cart');
-  const cart = ref(savedCart ? JSON.parse(savedCart) : []);
-
-  const totalItems = computed(() => cart.value.reduce((acc, item) => acc + item.quantity, 0));
-  const totalPrice = computed(() => cart.value.reduce((acc, item) => acc + item.price * item.quantity, 0));
-
-  function addToCart(product) {
-    const existingItem = cart.value.find((item) => item.id === product.id);
-    if (existingItem) {
-      existingItem.quantity++;
-    } else {
-      cart.value.push({ ...product, quantity: 1 });
-    }
-    saveCart();
-  }
-
-  function removeFromCart(id) {
-    cart.value = cart.value.filter((item) => item.id !== id);
-    saveCart();
-  }
-
-  function updateQuantity(id, quantity) {
-    const item = cart.value.find((item) => item.id === id);
-    if (item) {
-      item.quantity = quantity;
-      if (item.quantity <= 0) {
-        removeFromCart(id);
+export const useCartStore = defineStore('cart', {
+  state: () => ({
+    items: JSON.parse(localStorage.getItem('cart') || '[]')
+  }),
+  getters: {
+    totalItems: (state) => state.items.reduce((acc, item) => acc + item.quantity, 0),
+    totalPrice: (state) => state.items.reduce((acc, item) => acc + item.price * item.quantity, 0),
+  },
+  actions: {
+    addToCart(product) {
+      const existingItem = this.items.find((item) => item.id === product.id);
+      if (existingItem) {
+        existingItem.quantity++;
+      } else {
+        this.items.push({ ...product, quantity: 1 });
       }
-    }
-    saveCart();
-  }
-
-  function saveCart() {
-    localStorage.setItem('cart', JSON.stringify(cart.value));
-  }
-
-  return {
-    cart,
-    totalItems,
-    totalPrice,
-    addToCart,
-    removeFromCart,
-    updateQuantity,
-  };
+      this.saveCart();
+    },
+    removeFromCart(id) {
+      this.items = this.items.filter((item) => item.id !== id);
+      this.saveCart();
+    },
+    updateQuantity(id, quantity) {
+      const item = this.items.find((item) => item.id === id);
+      if (item) {
+        item.quantity = quantity;
+        if (item.quantity <= 0) {
+          this.removeFromCart(id);
+        }
+      }
+      this.saveCart();
+    },
+    saveCart() {
+      localStorage.setItem('cart', JSON.stringify(this.items));
+    },
+  },
 });

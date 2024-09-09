@@ -13,7 +13,7 @@
     <v-btn to="/" text size="large">Home</v-btn>
     <v-btn to="/shop" text size="large">Shop</v-btn>
     <v-btn icon to="/wishlist" text size="large">
-      <v-badge :content="wishlistCount" :vlaue="wishlistCount" color="red" overlap>
+      <v-badge :content="wishlistCount" :value="wishlistCount" color="red" overlap>
         <v-icon size="x-large">mdi-heart</v-icon>
       </v-badge>
     </v-btn>
@@ -30,20 +30,18 @@
 import { useCartStore } from '@/store/cartStore';
 import { useSearchStore } from '@/store/searchStore';
 import { computed } from 'vue';
-import { useRouter } from 'vue-router';
 import SearchBar from '@/components/SearchBar.vue';
 import { useWishlistStore } from '@/store/wishlistStore';
 
 const cartStore = useCartStore();
 const searchStore = useSearchStore();
-const router = useRouter();
+
 const totalItems = computed(() => cartStore.totalItems);
 
 const wishlistStore = useWishlistStore();
-const wishlistCount = computed(() => wishlistStore.items.length);
+const wishlistCount = computed(() => wishlistStore.getWishlistItemCount);
 
 const handleSearch = (query) => {
   searchStore.setQuery(query);
-  router.push({ path: '/shop', query: { q: query } });
 };
 </script>

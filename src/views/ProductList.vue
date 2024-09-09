@@ -31,7 +31,7 @@
   </v-container>
 </template>
 
-<script setup>
+<!-- <script setup>
 import { ref, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useProductStore } from '@/store/productStore';
@@ -76,6 +76,75 @@ const filteredProducts = computed(() => {
       ? product.title.toLowerCase().includes(searchStore.query.toLowerCase()) ||
         product.description.toLowerCase().includes(searchStore.query.toLowerCase()) || 
         product.category.toLowerCase().includes(searchStore.query.toLowerCase())
+      : true;
+    return matchesSearch;
+  });
+});
+
+const paginatedProducts = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  return filteredProducts.value.slice(start, end);
+});
+
+const pageCount = computed(() => 
+  Math.ceil(filteredProducts.value.length / itemsPerPage)
+);
+
+const addToCart = (product) => {
+  cartStore.addToCart(product);
+};
+
+const formatCategoryName = (category) => {
+  return category.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+};
+</script> -->
+
+<script setup>
+import { ref, computed, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
+import { useProductStore } from '@/store/productStore';
+import { useCartStore } from '@/store/cartStore';
+import { useSearchStore } from '@/store/searchStore';
+import ProductCard from '@/components/ProductCard.vue';
+
+const route = useRoute();
+const productStore = useProductStore();
+const cartStore = useCartStore();
+const searchStore = useSearchStore();
+
+const currentPage = ref(1);
+const itemsPerPage = 9;
+const loading = ref(true);
+
+const category = computed(() => route.params.category);
+
+onMounted(async () => {
+  await productStore.fetchData();
+  updateFilters();
+  loading.value = false;
+});
+
+function updateFilters() {
+  const querySearch = route.query.q || '';
+  searchStore.setQuery(querySearch);
+  currentPage.value = 1;
+}
+
+const filteredProducts = computed(() => {
+  let products = productStore.products;
+
+  if (category.value) {
+    products = products.filter(product => 
+      product.category.toLowerCase().replace(/\s+/g, '-') === category.value.toLowerCase()
+    );
+  }
+
+  return products.filter(product => {
+    const matchesSearch = searchStore.getCurrentQuery
+      ? product.title.toLowerCase().includes(searchStore.getCurrentQuery.toLowerCase()) ||
+        product.description.toLowerCase().includes(searchStore.getCurrentQuery.toLowerCase()) || 
+        product.category.toLowerCase().includes(searchStore.getCurrentQuery.toLowerCase())
       : true;
     return matchesSearch;
   });

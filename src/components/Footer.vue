@@ -9,8 +9,8 @@
   </v-footer>
 </template>
   
-  <script>
+<script>
   export default {};
-  </script>
+</script>
   
  
