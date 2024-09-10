@@ -4,9 +4,14 @@ export const useWishlistStore = defineStore('wishlist', {
   state: () => ({
     items: JSON.parse(localStorage.getItem('wishlist')) || [],
   }),
+  getters: {
+    getWishlistItems: (state) => state.items,
+    getWishlistItemCount: (state) => state.items.length,
+    isItemInWishlist: (state) => (productId) => state.items.some(item => item.id === productId),
+  },
   actions: {
     addToWishlist(product) {
-      if (!this.items.find(item => item.id === product.id)) {
+      if (!this.isItemInWishlist(product.id)) {
         this.items.push(product);
         this.saveToLocalStorage();
       }
@@ -14,9 +19,6 @@ export const useWishlistStore = defineStore('wishlist', {
     removeFromWishlist(productId) {
       this.items = this.items.filter(item => item.id !== productId);
       this.saveToLocalStorage();
-    },
-    isInWishlist(productId) {
-      return this.items.some(item => item.id === productId);
     },
     saveToLocalStorage() {
       localStorage.setItem('wishlist', JSON.stringify(this.items));

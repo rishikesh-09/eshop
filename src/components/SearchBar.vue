@@ -45,14 +45,15 @@ const updateSearch = (query) => {
   router.push({ path: '/shop', query: { q: query || undefined } });
 };
 
-watch(() => searchStore.query, (newQuery) => {
+watch(() => searchStore.getCurrentQuery, (newQuery) => {
   searchQuery.value = newQuery;
 });
 
 onMounted(() => {
-  searchQuery.value = route.query.q || '';
-  if (searchQuery.value) {
-    searchStore.setQuery(searchQuery.value);
+  const routeQuery = route.query.q || '';
+  searchQuery.value = routeQuery;
+  if (routeQuery) {
+    searchStore.setQuery(routeQuery);
   }
 });
 </script>

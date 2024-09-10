@@ -60,46 +60,38 @@
   <CheckoutDialog :isOpen="dialogOpen" @close="closeDialog" />
 </template>
 
-<script >
+<script setup>
 import { useCartStore } from '@/store/cartStore';
 import { ref, computed } from 'vue';
 import CheckoutDialog from '../components/CheckoutDialog.vue';
 
-export default {
-  components: { CheckoutDialog },
+const cartStore = useCartStore();
 
-  setup() {
-    const cartStore = useCartStore();
+const cartItems = computed(() => cartStore.items);
+const totalItems = computed(() => cartStore.totalItems);
+const totalPrice = computed(() => cartStore.totalPrice);
 
-    const cartItems = computed(() => cartStore.cart);
-    const totalItems = computed(() => cartStore.totalItems);
-    const totalPrice = computed(() => cartStore.totalPrice);
+const dialogOpen = ref(false);  
 
-    const dialogOpen = ref(false);  
+const openCheckoutDialog = () => {
+  dialogOpen.value = true;
+};
+const closeDialog = () => {
+  dialogOpen.value = false;
+};
 
-    const openCheckoutDialog = () => {
-      dialogOpen.value = true;
-    };
-    const closeDialog = () => {
-      dialogOpen.value = false;
-    };
+const removeFromCart = (id) => {
+  cartStore.removeFromCart(id);
+};
 
-    const removeFromCart = (id) => {
-      cartStore.removeFromCart(id);
-    };
+const increaseQuantity = (item) => {
+  cartStore.updateQuantity(item.id, item.quantity + 1);
+};
 
-    const increaseQuantity = (item) => {
-      cartStore.updateQuantity(item.id, item.quantity + 1);
-    };
-
-    const decreaseQuantity = (item) => {
-      if (item.quantity > 1) {
-        cartStore.updateQuantity(item.id, item.quantity - 1);
-      }
-    };
-
-    return { cartItems, totalItems, totalPrice, removeFromCart, increaseQuantity, decreaseQuantity, dialogOpen, openCheckoutDialog, closeDialog };
-  },
+const decreaseQuantity = (item) => {
+  if (item.quantity > 1) {
+    cartStore.updateQuantity(item.id, item.quantity - 1);
+  }
 };
 </script>
 
