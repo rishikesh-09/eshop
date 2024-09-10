@@ -1,8 +1,8 @@
 <template>
   <v-container>
     <CategoryBanner :categories />
-
-    <h2 class="mt-6">Best Products</h2>
+    <Carousel />
+    <h2 class="mt-6 text-center">Best Products</h2>
     <v-row>
       <v-col
         cols="12"
@@ -23,7 +23,7 @@ import { onMounted, computed } from 'vue';
 import { useProductStore } from '@/store/productStore';
 import CategoryBanner from '@/components/CategorySlider.vue';
 import ProductCard from '@/components/ProductCard.vue';
-
+import Carousel from '@/components/Carousel.vue';
 const productStore = useProductStore();
 
 onMounted(async () => {

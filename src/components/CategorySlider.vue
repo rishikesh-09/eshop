@@ -7,18 +7,14 @@
 
         <v-card :class="['ma-4', selectedClass]" height="200" width="200"
           @click="navigateToCategory(category)">
-          <v-img :src="getCategoryImage(category)" height="100%" cover >
-
+          <v-img :src="getCategoryImage(category)" height="80%" cover >
             <template v-slot:placeholder>
               <v-row class="fill-height ma-0" align="center" justify="center">
                 <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
               </v-row>
             </template>
-            
-            <div class="category-overlay">
-              <v-card-text class=" pa-1 text-center">{{ category }}</v-card-text>
-            </div>
           </v-img>
+            {{ category }}
         </v-card>
       </v-slide-group-item>
     </v-slide-group>

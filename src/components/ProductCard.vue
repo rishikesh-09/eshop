@@ -1,13 +1,13 @@
 <template>
-  <v-card class="d-flex flex-column" height="100%" hover>
-    <v-img :src="product.image" height="200" contain>
+  <v-card class="d-flex flex-column px-4 py-4" height="100%" hover>
+    <v-img :src="product.image" height="160" contain>
       <v-icon class="isInWishlist" @click="toggleWishlist" style="position: absolute; top: 8px; right: 8px;">{{
         isInWishlist ? 'mdi-heart' : 'mdi-heart-outline' }}
       </v-icon>
     </v-img>
     <v-card-title>{{ product.title }}</v-card-title>
     <v-card-text class="font-weight-bold">${{ product.price }}</v-card-text>
-    <v-card-subtitle class="font-weight-bold">rating: {{ product.rating.rate }}</v-card-subtitle>
+    <v-card-subtitle class="font-weight-bold">rating: {{ product.rating.rate }}<div class="Stars" style="--rating: 4.3;"></div></v-card-subtitle>
     <v-card-text class="description-text">
       {{ product.description }}
     </v-card-text>
@@ -39,7 +39,7 @@ const addToCart = () => {
 
 const wishlistStore = useWishlistStore();
 
-const isInWishlist = computed(() => wishlistStore.isInWishlist(props.product.id));
+const isInWishlist = computed(() => wishlistStore.isItemInWishlist(props.product.id));
 
 const toggleWishlist = () => {
   if (isInWishlist.value) {
@@ -61,4 +61,5 @@ const toggleWishlist = () => {
 /* .v-btn--active {
   background-color: rgba(255, 255, 255, 0.3);
 } */
+ 
 </style>
