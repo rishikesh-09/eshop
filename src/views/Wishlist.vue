@@ -31,6 +31,6 @@ const wishlistItems = computed(() => wishlistStore.getWishlistItems);
   margin: 2rem 0;
 }
 .v-container {
-  max-width: fit-content;
+  max-width: 1200px;
 }
 </style>
