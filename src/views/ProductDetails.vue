@@ -47,7 +47,7 @@ const product = ref(null);
 const loading = ref(true);
 
 onMounted(async () => {
-  const productId = parseInt(route.params.id, 10);
+  const productId = route.params.id;
   try {
     product.value = await productStore.getProductById(productId);
   } catch (error) {

@@ -69,7 +69,7 @@ export const useProductStore = defineStore('productStore', {
           
           const randomNumber = generateRandomFloat(1, 5);
           this.products = productsData.map(edge => ({
-            id: edge.node.id,
+            id: edge.node.id.split('/').pop(),
             title: edge.node.title,
             description: edge.node.description,
             image: edge.node.images.edges[0]?.node.url,
