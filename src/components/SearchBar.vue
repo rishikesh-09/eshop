@@ -1,7 +1,7 @@
 <template>
   <v-text-field
     v-model="searchQuery"
-    label="Search"
+    label="Search for Products, Brands and More"
     outlined
     dense
     clearable
@@ -9,9 +9,9 @@
     @input="handleInput"
     @click:clear="handleClear"
   >
-    <template v-slot:append-inner>
-      <v-icon @click="handleSearchClick">mdi-magnify</v-icon>
-    </template>
+  <template v-slot:prepend-inner>
+    <v-icon @click="handleSearchClick"  >mdi-magnify</v-icon>
+  </template>
   </v-text-field>
 </template>
 

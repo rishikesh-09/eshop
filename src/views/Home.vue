@@ -1,6 +1,8 @@
 <template>
+  
   <v-container>
-    <CategoryBanner :categories />
+    <!-- <CategoryBanner :categories /> -->
+    
     <Carousel />
     <h2 class="mt-6 text-center">Best Products</h2>
     <v-row>
@@ -31,7 +33,7 @@ onMounted(async () => {
 });
 
 const featuredProducts = computed(() => 
-  productStore.products.filter((product) => product.rating.rate >= 4.5).slice(0, 5)
+ productStore.products.filter((product) => product.rating >= 4.5).slice(0, 5)
 );
 
 const categories = computed(() => productStore.categories);

@@ -1,26 +1,21 @@
 <template>
-  <v-carousel
-    height="400"
-    show-arrows="hover"
-    cycle
-    hide-delimiter-background
-  >
-    <v-carousel-item
-      v-for="(slide, i) in slides"
-      :key="i"
-    >
-      <v-sheet
-        :color="colors[i]"
-        height="100%"
-      >
-        <div class="d-flex fill-height justify-center align-center">
-          <div class="text-h2">
-            {{ slide }} Slide
-          </div>
-        </div>
-      </v-sheet>
-    </v-carousel-item>
-  </v-carousel>
+<v-carousel height="265px" cycle>
+  <v-carousel-item
+    src="src/assests/First.webp"
+    cover
+  ></v-carousel-item>
+
+  <v-carousel-item
+    src="src/assests/Second.webp"
+    cover
+  ></v-carousel-item>
+
+  <v-carousel-item
+    src="src/assests/Third.webp"
+    cover
+  ></v-carousel-item>
+  
+</v-carousel>
 </template>
 <script>
   export default {
@@ -34,11 +29,19 @@
           'deep-purple accent-4',
         ],
         slides: [
-          'First',
-          'Second',
-          'Third',
-          'Fourth',
-          'Fifth',
+            {
+                name : 'First',
+                src:'src\assests\First.webp',
+            },
+            {
+                name : 'Second',
+                src:'src\assests\Second.webp',
+            },
+            {
+                name : 'Third',
+                src:'src\assests\Third.webp',
+            },
+         
         ],
       }
     },

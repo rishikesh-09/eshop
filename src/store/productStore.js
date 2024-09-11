@@ -15,13 +15,74 @@ export const useProductStore = defineStore('productStore', {
     async fetchData() {
       if (this.products.length === 0) {
         try {
-          const response = await axios.get('https://fakestoreapi.com/products');
-          this.products = response.data;
+          const SHOPIFY_API_URL = 'https://vue-storefront-api.myshopify.com/api/2024-07/graphql.json';
+          const SHOPIFY_API_TOKEN = "2361c98e6ec9889df7bab8ba073056f0";
+          
+          const shopifyClient = axios.create({
+            baseURL: SHOPIFY_API_URL,
+            headers: {
+              'X-Shopify-Storefront-Access-Token': SHOPIFY_API_TOKEN,
+              'Content-Type': 'application/json',
+            },
+          });
 
-          const uniqueCategories = new Set(this.products.map(product => product.category));
-          this.categories = ['All', ...uniqueCategories];
+          const query = `
+            {
+              products(first: 25) {
+                edges {
+                  node {
+                    id
+                    title
+                    description
+                    images(first: 1) {
+                      edges {
+                        node {
+                          url
+                        }
+                      }
+                    }
+                    variants(first: 1) {
+                      edges {
+                        node {
+                          priceV2 {
+                            amount
+                            currencyCode
+                          }
+                          compareAtPriceV2 {
+                            amount
+                            currencyCode
+                          }
+                        }
+                      }
+                    }    
+                  }
+                }
+              }
+            }
+          `;
+
+          const response = await shopifyClient.post('', { query });
+          const productsData = response.data.data.products.edges;
+          function generateRandomFloat(min, max) {
+            return (Math.random() * (max - min) + min).toFixed(1);
+          }
+          
+          const randomNumber = generateRandomFloat(1, 5);
+          this.products = productsData.map(edge => ({
+            id: edge.node.id,
+            title: edge.node.title,
+            description: edge.node.description,
+            image: edge.node.images.edges[0]?.node.url,
+            price: edge.node.variants.edges[0]?.node.priceV2.amount,
+            compareAtPrice: edge.node.variants.edges[0]?.node.compareAtPriceV2?.amount,
+            category: 'Shopify Category', // Shopify API does not return a category directly
+            rating : generateRandomFloat(3, 5)
+          }));
+
+          // Set unique categories (since Shopify does not provide categories in the response, set a default one)
+          this.categories = ['All', 'Shopify Category'];
         } catch (error) {
-          console.error('Error fetching products and categories:', error);
+          console.error('Error fetching products and categories from Shopify API:', error);
           throw error;
         }
       }

@@ -1,7 +1,9 @@
 <template>
   <v-app-bar  class="py-2" :elevation="2" app>
     <v-avatar size="90">
-      <v-img src="src\assests\logo.png" class="ml-3"></v-img>
+      <router-link to="/">
+      <v-img src="src\assests\logo.png"  height="63px" width="100px" class="ml-3"></v-img>
+    </router-link>
     </v-avatar>
     
    <v-toolbar-title class="text-center mr-3" style="max-width: 100px;">E-Shop</v-toolbar-title>
