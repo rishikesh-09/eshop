@@ -182,6 +182,6 @@ const formatCategoryName = (category) => {
   text-transform: capitalize;
 }
 .v-container{
-  max-width: fit-content;
+  max-width: 1200px;
 }
 </style>

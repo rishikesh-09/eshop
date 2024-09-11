@@ -4,7 +4,7 @@
     <!-- <CategoryBanner :categories /> -->
     
     <Carousel />
-    <h2 class="mt-6 text-center">Best Products</h2>
+    <h2 class="mt-6 text-center">Best Rated Products</h2>
     <v-row>
       <v-col
         cols="12"
