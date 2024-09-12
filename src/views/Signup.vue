@@ -65,23 +65,13 @@
   </section>
 </template>
 <script>
-
- export default {
-    data: () => ({
-     
-    }),
-    mounted() {
-      let recaptchaScript = document.createElement('script')
+import { onMounted } from 'vue';
+ 
+  onMounted(()=>{
+    let recaptchaScript = document.createElement('script')
       recaptchaScript.setAttribute('src', 'https://kit.fontawesome.com/e021600557.js')
       document.head.appendChild(recaptchaScript)
-    },
-    methods: {
-      viewLoginPage(){
-        this.$router.push('/login');
-      }
-   
-    }
-  }
+    });
 </script>
 <style scoped>
 .divider:after,

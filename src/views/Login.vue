@@ -6,11 +6,10 @@
     <div class="container-fluid h-custom">
       <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col-md-9 col-lg-6 col-xl-5">
-
             <v-img src="src\assests\logo.png" class="ml-3"></v-img>
         </div>
         <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-          <form>
+          <v-form @submit.prevent="login" ref="form">
             <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
               <p class="lead fw-normal mb-0 me-3 ">Sign in with</p>
               <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-floating mx-1">
@@ -32,15 +31,23 @@
   
             <!-- Email input -->
             <div data-mdb-input-init class="form-outline mb-4">
-              <input type="email" id="form3Example3" class="form-control form-control-lg"
-                placeholder="Enter a valid email address" />
+              <input v-model="email"
+                label="Email"
+                name="email" type="email" class="form-control form-control-lg"
+              id="form3Example3" placeholder="Enter a valid email address"  />
               <label class="form-label" for="form3Example3">Email address</label>
             </div>
   
             <!-- Password input -->
             <div data-mdb-input-init class="form-outline mb-3">
               <input type="password" id="form3Example4" class="form-control form-control-lg"
-                placeholder="Enter password" />
+                placeholder="Enter password" 
+                v-model="password"
+                label="Password"
+                name="password"
+                prepend-icon="mdi-lock"
+                />
+                
               <label class="form-label" for="form3Example4">Password</label>
             </div>
   
@@ -56,39 +63,59 @@
             </div>
   
             <div class="text-center text-lg-start mt-4 pt-2">
-              <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg"
-                style="padding-left: 2.5rem; padding-right: 2.5rem;">Login</button>
+                <v-btn color="primary" @click="login">Login</v-btn>
               <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="#!"
                   class="link-danger"@click="viewsignup()">Register</a></p>
             </div>
-  
-          </form>
+          </v-form>
         </div>
       </div>
     </div>
-    
       <!-- Right -->
-    
   </section>
 </template>
-<script>
+<script setup>
+import { ref , onMounted} from 'vue';
+import { useRouter } from 'vue-router';
+import { useAuthStore} from '@/store/authStore';
 
- export default {
-    data: () => ({
-     
-    }),
-    mounted() {
-      let recaptchaScript = document.createElement('script')
+const router = useRouter();
+const authStore = useAuthStore();
+
+const email = ref('');
+const password = ref('');
+const form = ref(null);
+
+const snackbar = ref(false);
+const snackbarText = ref('');
+const snackbarColor = ref('');
+
+const rules = {
+  required: value => !!value || 'Required.',
+  email: v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+};
+onMounted(()=>{
+    let recaptchaScript = document.createElement('script')
       recaptchaScript.setAttribute('src', 'https://kit.fontawesome.com/e021600557.js')
       document.head.appendChild(recaptchaScript)
-    },
-    methods: {
-      viewsignup(){
-        this.$router.push('/signup');
-      }
-   
+    });
+
+const login = async() => {
+  const { valid } = await form.value.validate();
+  console.log("working",valid)
+  if (valid) {
+    try {
+      await authStore.login(email.value, password.value);
+      router.push('/home');
+    } catch (error) {
+      snackbarText.value = error.message;
+      snackbarColor.value = 'error';
+      snackbar.value = true;
     }
   }
+};
+
+  
 </script>
 <style scoped>
 .divider:after,

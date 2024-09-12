@@ -15,7 +15,7 @@
                 <v-img :src="item.image" height="80px" width="80px" cover class="rounded mr-4"></v-img>
               </template>
               <v-list-item-title class="text-h6 mb-1">{{ item.title }}</v-list-item-title>
-              <v-list-item-subtitle class="font-weight-bold">${{ item.price }}</v-list-item-subtitle>
+              <v-list-item-subtitle class="font-weight-bold ">${{ item.price }}</v-list-item-subtitle>
               
               <template v-slot:append>
                 <v-row align="center" no-gutters>
@@ -115,6 +115,6 @@ const decreaseQuantity = (item) => {
   border-bottom: none;
 }
 .v-container{
-  max-width: fit-content;
+  max-width: 1200px;
 }
 </style>
