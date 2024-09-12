@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <Header />
+    <Header v-if="!isSignupPage && !isLoginPage" />
     <v-main>
       <router-view />
     </v-main>
