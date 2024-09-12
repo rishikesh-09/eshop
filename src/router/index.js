@@ -6,7 +6,7 @@ import Home from '@/views/Home.vue';
 import Wishlist from '@/views/Wishlist.vue';
 import Login from '@/views/Login.vue';
 import Signup from '@/views/Signup.vue';
-
+import { useAuthStore } from '@/store/authStore';
 const routes = [
   
   {path: '/', component: Home},
@@ -26,6 +26,14 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore();
+  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
+    next({ name: 'Login' });
+  } else {
+    next();
+  }
 });
 
 export default router;
