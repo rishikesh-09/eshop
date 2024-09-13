@@ -31,7 +31,7 @@ export const useAuthStore = defineStore('auth', {
       userData.users.push(newUser);
       this.user = { id: newUser.id, email: newUser.email, name: newUser.name };
       localStorage.setItem('user', JSON.stringify(this.user));
-   
+  
       console.log('New user registered:', newUser);
     },
     logout() {

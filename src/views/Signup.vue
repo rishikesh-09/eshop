@@ -12,30 +12,26 @@
         <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
           <v-form @submit.prevent="signup" ref="form">
             <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
-              <p class="lead fw-normal mb-0 me-3 ">Sign up with</p>
-              <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-floating mx-1">
-                <i class="fab fa-facebook"></i>
-              </button>
- 
-              <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-floating mx-1">
+              <p class="lead fw-normal mb-0 me-3 ">Sign in with</p>
+              <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" class="btn btn-floating mx-1" style="background-color: teal;">
+              <i class="fab fa-facebook"></i>
+              </a>
+              <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer" class="btn btn-floating mx-1" style="background-color: teal;">
                 <i class="fab fa-twitter"></i>
-              </button>
-              <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-floating mx-1">
+              </a>
+              <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" class="btn btn-floating mx-1" style="background-color: teal;">
                 <i class="fab fa-linkedin-in"></i>
-              </button>
+              </a>
             </div>
- 
             <div class="divider d-flex align-items-center my-4">
               <p class="text-center fw-bold mx-3 mb-0">Or</p>
             </div>
- 
             <!-- Email input -->
             <div data-mdb-input-init class="form-outline mb-4">
               <input type="name" id="form3Example3" class="form-control form-control-lg"
                 placeholder="Enter your name " v-model="name" />
               <label class="form-label" for="form3Example3">Name</label>
             </div>
- 
             <!-- Password input -->
             <div data-mdb-input-init class="form-outline mb-3">
               <input type="email" id="form3Example4" class="form-control form-control-lg"
@@ -54,8 +50,7 @@
                 <label class="form-label" for="form3Example4">Phone No.</label>
               </div>
             <div class="text-center text-lg-start mt-4 pt-2">
-              <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg"
-                style="padding-left: 2.5rem; padding-right: 2.5rem;" @click="signup">Sign up</button>
+              <v-btn color="teal" @click="signup">Signup </v-btn>
               <p class="small fw-bold mt-2 pt-1 mb-0">Already have an account? <a href="#!"
                   class="link-danger"@click="$router.push('/login')">Login</a></p>
             </div>
