@@ -12,7 +12,7 @@
         <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
           <v-form @submit.prevent="signup" ref="form">
             <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
-              <p class="lead fw-normal mb-0 me-3 ">Sign in with</p>
+              <p class="lead fw-normal mb-0 me-3 ">Sign up with</p>
               <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" class="btn btn-floating mx-1" style="background-color: teal;">
               <i class="fab fa-facebook"></i>
               </a>
