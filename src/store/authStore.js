@@ -16,6 +16,7 @@ export const useAuthStore = defineStore('auth', {
       }
     },
     async signup(email, password, name) {
+      console.log("working")
       if (userData.users.some(u => u.email === email)) {
         throw new Error('Email already registered');
       }
@@ -26,7 +27,7 @@ export const useAuthStore = defineStore('auth', {
         name
       };
       userData.users.push(newUser);
-      this.user = { id: newUser.id, email: newUser.email, name: newUser.name };
+      this.user = { id: newUser.id, email: newUser.email, name: newUser.name, password: newUser.password };
       localStorage.setItem('user', JSON.stringify(this.user));
     
       console.log('New user registered:', newUser);

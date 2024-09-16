@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <Header />
+    <Header v-if="!isSignupPage && !isLoginPage" />
     <v-main>
       <router-view />
     </v-main>
@@ -8,24 +8,16 @@
   </v-app>
 </template>
 
-<script>
+<script setup >
 import Header from '@/components/Header.vue';
 import Footer from '@/components/Footer.vue';
-import Signup from './views/Signup.vue';
+import { computed } from 'vue';
 
-export default {
-  components: {
-    Header,
-    Footer,
-  },
-  computed: {
-    isSignupPage() {
-      return this.$route.path === '/signup';
-    },
-    isLoginPage() {
-      return this.$route.path === '/login';
-    }}
-};
+import { useRoute } from 'vue-router';
+const route = useRoute();
+
+const isSignupPage = computed(() => route.path === '/signup');
+const isLoginPage = computed(() => route.path === '/login');
 </script>
 
 <style> 
