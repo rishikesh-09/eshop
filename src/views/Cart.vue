@@ -49,7 +49,7 @@
             </v-row>
           </v-card-text>
           <v-card-actions class="mt-4">
-            <v-btn @click="openCheckoutDialog" color="primary" variant="elevated" block>
+            <v-btn @click="openCheckoutDialog" color="teal" variant="elevated" block>
               Proceed to Checkout
             </v-btn>
           </v-card-actions>

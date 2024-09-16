@@ -19,14 +19,12 @@ const routes = [
   { path: '/wishlist', name: 'Wishlist', component: Wishlist,  meta: { requiresAuth: true } },
   { path: '/login' , name: 'Login', component: Login },
   {path:'/signup', name:'Signup', component: Signup},
-
 ];
-
+ 
 const router = createRouter({
   history: createWebHistory(),
   routes,
 });
-
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
   if (to.meta.requiresAuth && !authStore.isAuthenticated) {

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import userData from '@/assests/userData.json';
-
+ 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     user: null,
@@ -16,7 +16,7 @@ export const useAuthStore = defineStore('auth', {
       }
     },
     async signup(email, password, name) {
-      console.log("working")
+      console.log("signup", email, password, name);
       if (userData.users.some(u => u.email === email)) {
         throw new Error('Email already registered');
       }
@@ -26,10 +26,12 @@ export const useAuthStore = defineStore('auth', {
         password,
         name
       };
+      console.log("newUser", newUser);
+      
       userData.users.push(newUser);
-      this.user = { id: newUser.id, email: newUser.email, name: newUser.name, password: newUser.password };
+      this.user = { id: newUser.id, email: newUser.email, name: newUser.name };
       localStorage.setItem('user', JSON.stringify(this.user));
-    
+  
       console.log('New user registered:', newUser);
     },
     logout() {

@@ -1,7 +1,7 @@
 <template>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 <section class="vh-100">
-
+ 
     <div class="container-fluid h-custom">
       <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col-md-9 col-lg-6 col-xl-5">
@@ -11,19 +11,17 @@
           <v-form @submit.prevent="login" ref="form">
             <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
               <p class="lead fw-normal mb-0 me-3 ">Sign in with</p>
-              <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-floating mx-1">
-                <i class="fab fa-facebook-f"></i>
-              </button>
-  
-              <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-floating mx-1">
+              <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" class="btn btn-floating mx-1" style="background-color: teal;">
+              <i class="fab fa-facebook"></i>
+              </a>
+              <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer" class="btn btn-floating mx-1" style="background-color: teal;">
                 <i class="fab fa-twitter"></i>
-              </button>
-  
-              <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-floating mx-1">
+              </a>
+              <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" class="btn btn-floating mx-1" style="background-color: teal;">
                 <i class="fab fa-linkedin-in"></i>
-              </button>
+              </a>
             </div>
-  
+ 
             <div class="divider d-flex align-items-center my-4">
               <p class="text-center fw-bold mx-3 mb-0">Or</p>
             </div>
@@ -49,7 +47,7 @@
                 
               <label class="form-label" for="form3Example4">Password</label>
             </div>
-  
+ 
             <div class="d-flex justify-content-between align-items-center">
               
               <div class="form-check mb-0">
@@ -60,7 +58,7 @@
               </div>
               <a href="#!" class="text-body">Forgot password?</a>
             </div>
-  
+ 
             <div class="text-center text-lg-start mt-4 pt-2">
                 <v-btn color="primary" @click="login">Login</v-btn>
               <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href=""
