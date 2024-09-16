@@ -1,5 +1,5 @@
 <template>
-<v-carousel height="265px" interval="2000" cycle>
+<v-carousel height="265px" interval=2000 cycle >
   <v-carousel-item
     src="src/assests/First.webp"
     cover

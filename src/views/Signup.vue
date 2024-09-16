@@ -32,20 +32,20 @@
   
             <!-- Email input -->
             <div data-mdb-input-init class="form-outline mb-4">
-              <input type="email" id="form3Example3" class="form-control form-control-lg"
-                placeholder="Enter a valid Password " />
+              <input type="name" id="form3Example3" class="form-control form-control-lg"
+                placeholder="Enter your name " />
               <label class="form-label" for="form3Example3">Name</label>
             </div>
   
             <!-- Password input -->
             <div data-mdb-input-init class="form-outline mb-3">
-              <input type="password" id="form3Example4" class="form-control form-control-lg"
-                placeholder="Enter password" />
+              <input type="email" id="form3Example4" class="form-control form-control-lg"
+                placeholder="Enter Email" />
               <label class="form-label" for="form3Example4">Email Address</label>
             </div>
             <div data-mdb-input-init class="form-outline mb-3">
-                <input type="password" id="form3Example4" class="form-control form-control-lg"
-                  placeholder="Enter password" />
+                <input type="phone no" id="form3Example4" class="form-control form-control-lg"
+                  placeholder="Enter your 10-digit Phone Number" />
                 <label class="form-label" for="form3Example4">Phone No.</label>
               </div>
             <div class="text-center text-lg-start mt-4 pt-2">
