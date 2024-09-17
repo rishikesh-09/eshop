@@ -1,0 +1,43 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "email": "john@example.com",
+      "password": "12345678",
+      "name": "John Doe"
+    },
+    {
+      "id": "2",
+      "email": "jane@example.com",
+      "password": "32638465837",
+      "name": "Jane Smith"
+    },
+    {
+      "id": "3",
+      "email": "bob@example.com",
+      "password": "98346536763",
+      "name": "Bob Johnson"
+    },
+    {
+      "id": "a21a",
+      "name": "RIMPA BARMAN",
+      "email": "Rimpa.Barman@Techmahindra.com",
+      "password": "asasas",
+      "phone": "09123312196"
+    },
+    {
+      "id": "a372",
+      "name": "RIMPA BARMAN",
+      "email": "rimpa@gmail.com",
+      "password": "wwwwww",
+      "phone": "09123312196"
+    },
+    {
+      "id": "4512",
+      "name": "qqq",
+      "email": "qw@gmail.com",
+      "password": "12345678",
+      "phone": "01234567899"
+    }
+  ]
+}
