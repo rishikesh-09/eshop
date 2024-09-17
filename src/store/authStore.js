@@ -29,7 +29,7 @@ export const useAuthStore = defineStore('auth', {
       console.log("newUser", newUser);
       
       userData.users.push(newUser);
-      this.user = { id: newUser.id, email: newUser.email, name: newUser.name };
+      this.user = { id: newUser.id, email: newUser.email, name: newUser.name , password: newUser.password};
       localStorage.setItem('user', JSON.stringify(this.user));
   
       console.log('New user registered:', newUser);

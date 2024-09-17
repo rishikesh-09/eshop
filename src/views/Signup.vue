@@ -28,34 +28,33 @@
             </div>
             <!-- Email input -->
             <div data-mdb-input-init class="form-outline mb-4">
-              <input type="name" id="form3Example3" class="form-control form-control-lg"
-                placeholder="Enter your name " v-model="name" />
-              <label class="form-label" for="form3Example3">Name</label>
+              <input type="email" id="form3Example3" class="form-control form-control-lg"
+                placeholder="Enter your email address" v-model="email"/>
+              <label class="form-label" for="form3Example3">Email address</label>
             </div>
             <!-- Password input -->
             <div data-mdb-input-init class="form-outline mb-3">
-              <input type="email" id="form3Example4" class="form-control form-control-lg"
-                placeholder="Enter Email" v-model="email"/>
-              <label class="form-label" for="form3Example4">Email Address</label>
+              <input type="password" id="form3Example4" class="form-control form-control-lg"
+                placeholder="Enter your password" v-model="password"/>
+              <label class="form-label" for="form3Example4">Password</label>
             </div>
             <div data-mdb-input-init class="form-outline mb-3">
-                <input type="password" id="form3Example4" class="form-control form-control-lg"
-                    v-model="password"
-                  placeholder="Enter Your Password " />
-                <label class="form-label" for="form3Example4">Enter Password</label>
-              </div>
-            <div data-mdb-input-init class="form-outline mb-3">
-                <input type="phone no" id="form3Example4" class="form-control form-control-lg"
-                  placeholder="Enter your 10-digit Phone Number" />
-                <label class="form-label" for="form3Example4">Phone No.</label>
+                <input type="name" id="form3Example4" class="form-control form-control-lg"
+                  placeholder="Enter Your Name" v-model="name"/>
+                <label class="form-label" for="form3Example4">Name</label>
               </div>
             <div class="text-center text-lg-start mt-4 pt-2">
-              <v-btn color="teal" @click="signup">Signup </v-btn>
-              <p class="small fw-bold mt-2 pt-1 mb-0">Already have an account? <a href="#!"
+              <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg"
+                style="padding-left: 2.5rem; padding-right: 2.5rem;" @click="signup">Sign up</button>
+              <p class="small fw-bold mt-2 pt-1 mb-0">Already have an account? <a href=""
                   class="link-danger"@click="$router.push('/login')">Login</a></p>
             </div>
-            
+
+  
           </v-form>
+          <v-snackbar v-model="snackbar" :color="snackbarColor" timeout="3000">
+              hello{{ snackbarText }}
+          </v-snackbar>
         </div>
       </div>
     </div>
@@ -65,17 +64,10 @@
   </section>
 </template>
 <script setup>
+
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/store/authStore';
-import { onMounted } from 'vue';
- 
-onMounted(()=>{
-    let recaptchaScript = document.createElement('script')
-      recaptchaScript.setAttribute('src', 'https://kit.fontawesome.com/e021600557.js')
-      document.head.appendChild(recaptchaScript)
-});
-
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -99,7 +91,7 @@ const rules = {
 
 const signup = async () => {
   const { valid } = await form.value.validate();
-  console.log(email.value,password.value,name.value);
+  
   if (valid) {
     try {
       await authStore.signup(email.value, password.value, name.value);
@@ -114,7 +106,6 @@ const signup = async () => {
     }
   }
 };
-
 
 </script>
 <style scoped>

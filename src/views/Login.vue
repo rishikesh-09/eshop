@@ -1,6 +1,5 @@
 <template>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-   
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 <section class="vh-100">
  
     <div class="container-fluid h-custom">
@@ -26,31 +25,31 @@
             <div class="divider d-flex align-items-center my-4">
               <p class="text-center fw-bold mx-3 mb-0">Or</p>
             </div>
- 
-            <!-- Email input -->
+  
+            
             <div data-mdb-input-init class="form-outline mb-4">
               <input v-model="email"
-                label="Email"
+                label="Email Your Name"
                 name="email" type="email" class="form-control form-control-lg"
-              id="form3Example3" placeholder="Enter a valid email address"  />
+              id="form3Example3" placeholder="Enter your name"  />
               <label class="form-label" for="form3Example3">Email address</label>
             </div>
- 
-            <!-- Password input -->
+  
+            
             <div data-mdb-input-init class="form-outline mb-3">
               <input type="password" id="form3Example4" class="form-control form-control-lg"
-                placeholder="Enter password"
+                placeholder="Enter password" 
                 v-model="password"
                 label="Password"
                 name="password"
                 prepend-icon="mdi-lock"
                 />
-               
+                
               <label class="form-label" for="form3Example4">Password</label>
             </div>
  
             <div class="d-flex justify-content-between align-items-center">
-              <!-- Checkbox -->
+              
               <div class="form-check mb-0">
                 <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3" />
                 <label class="form-check-label" for="form2Example3">
@@ -61,46 +60,41 @@
             </div>
  
             <div class="text-center text-lg-start mt-4 pt-2">
-                <v-btn color="teal" @click="login">Login</v-btn>
-              <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="#!"
+                <v-btn color="primary" @click="login">Login</v-btn>
+              <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href=""
                   class="link-danger"@click="$router.push('/signup')">Register</a></p>
             </div>
           </v-form>
         </div>
       </div>
     </div>
-      <!-- Right -->
+    
   </section>
 </template>
 <script setup>
-import { ref , onMounted} from 'vue';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useAuthStore} from '@/store/authStore';
- 
+import { useAuthStore } from '@/store/authStore';
+
 const router = useRouter();
 const authStore = useAuthStore();
- 
+
 const email = ref('');
 const password = ref('');
 const form = ref(null);
- 
+
 const snackbar = ref(false);
 const snackbarText = ref('');
 const snackbarColor = ref('');
- 
+
 const rules = {
   required: value => !!value || 'Required.',
   email: v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
 };
-onMounted(()=>{
-    let recaptchaScript = document.createElement('script')
-      recaptchaScript.setAttribute('src', 'https://kit.fontawesome.com/e021600557.js')
-      document.head.appendChild(recaptchaScript)
-    });
- 
-const login = async() => {
+
+const login = async () => {
   const { valid } = await form.value.validate();
-  console.log("working",valid)
+  
   if (valid) {
     try {
       await authStore.login(email.value, password.value);
@@ -112,8 +106,6 @@ const login = async() => {
     }
   }
 };
- 
- 
 </script>
 <style scoped>
 .divider:after,
@@ -131,4 +123,8 @@ height: calc(100% - 73px);
 height: 100%;
 }
 }
-</style>
+</style> 
+
+  
+
+  
