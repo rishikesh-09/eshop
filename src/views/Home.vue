@@ -1,9 +1,14 @@
-<template>
-  
-  <v-container>
+<template >
+  <CartDrawer :isOpen="isCartDrawerOpen" @update:isOpen="isCartDrawerOpen = $event" />
+  <div v-if="carouselLoading" class="loader-container">
+    <v-progress-circular color="primary" indeterminate size="64"></v-progress-circular>
+  </div>
+  <!-- <v-progress-circular class="loader-container" color="primary" indeterminate size="64" v-if="carouselLoading"  height="400px" /> -->
+  <v-container v-else>
     <!-- <CategoryBanner :categories /> -->
     
-    <Carousel />
+      <Carousel class="mt-3"/>
+    
     <h2 class="mt-6 text-center">Best Rated Products</h2>
     <v-row>
       <v-col
@@ -26,10 +31,12 @@ import { useProductStore } from '@/store/productStore';
 import CategoryBanner from '@/components/CategorySlider.vue';
 import ProductCard from '@/components/ProductCard.vue';
 import Carousel from '@/components/Carousel.vue';
+import { ref } from 'vue';
 const productStore = useProductStore();
-
+const carouselLoading = ref(true)
 onMounted(async () => {
   await productStore.fetchData();
+   carouselLoading.value = false;
 });
 
 const featuredProducts = computed(() => 
@@ -48,5 +55,12 @@ const categories = computed(() => productStore.categories);
   }
   .v-container{
   max-width: fit-content;
+}
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw; /* This will take the full height of the viewport */
 }
 </style>
