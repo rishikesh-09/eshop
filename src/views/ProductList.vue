@@ -1,7 +1,19 @@
 <template>
+  
   <v-container>
     <h1 v-if="category" class="category-title">{{ formatCategoryName(category) }}</h1>
     <h1 v-else class="shop-title">All Products</h1>
+
+    <v-row>
+    <v-col cols="12" md="4">
+      <label for="sortSelect">Sort by</label>
+        <select id="sortSelect" v-model="sortOption">
+          <option v-for="option in sortOptions" :key="option.value" :value="option.value" >
+             {{ option.text }}
+          </option>
+        </select>
+    </v-col>
+  </v-row>
 
     <v-row v-if="loading">
       <v-col class="text-center">
@@ -17,7 +29,7 @@
 
     <template v-else>
       <v-row>
-        <v-col v-for="product in paginatedProducts" :key="product.id" cols="12" sm="6" md="4">
+        <v-col v-for="product in sortedProducts" :key="product.id" cols="12" sm="6" md="4">
           <ProductCard :product="product" @add-to-cart="addToCart" />
         </v-col>
       </v-row>
@@ -37,7 +49,6 @@ import { useProductStore } from '@/store/productStore';
 import { useCartStore } from '@/store/cartStore';
 import { useSearchStore } from '@/store/searchStore';
 import ProductCard from '@/components/ProductCard.vue';
-
 const route = useRoute();
 const productStore = useProductStore();
 const cartStore = useCartStore();
@@ -48,6 +59,25 @@ const itemsPerPage = 9;
 const loading = ref(true);
 
 const category = computed(() => route.params.category);
+
+const sortOption = ref();
+const sortOptions = ref([
+  { text: ' Price : High to Low', value: 'high-to-low' },
+  { text: ' Price : Low to High', value: 'low-to-high' }
+]);
+
+
+
+
+const sortedProducts = computed(() => {
+  if (sortOption.value === 'high-to-low') {
+    return filteredProducts.value.slice().sort((a, b) => b.price - a.price);
+  } else if (sortOption.value === 'low-to-high') {
+    return filteredProducts.value.slice().sort((a, b) => a.price - b.price);
+  } else {
+    return filteredProducts.value;
+  }
+});
 
 onMounted(async () => {
   await productStore.fetchData();

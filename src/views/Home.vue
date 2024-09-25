@@ -6,7 +6,7 @@
   <!-- <v-progress-circular class="loader-container" color="primary" indeterminate size="64" v-if="carouselLoading"  height="400px" /> -->
   <v-container v-else>
     <!-- <CategoryBanner :categories /> -->
-    
+      
       <Carousel class="mt-3"/>
     
     <h2 class="mt-6 text-center">Best Rated Products</h2>
